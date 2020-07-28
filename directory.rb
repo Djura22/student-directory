@@ -29,26 +29,10 @@ def input_students
   # return the array of students
   students
 end
-=begin
-# 1. put the list of students into an Array
-students = [
-  {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november},
-  {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
-  {name: "Terminator", cohort: :november},
-  {name: "Freddy Krueger", cohort: :november},
-  {name: "The Joker", cohort: :november},
-  {name: "Joffrey Baratheon", cohort: :november},
-  {name: "Norman Bates", cohort: :november}
-]
-=end
 # 2. print the header
 def print_header
-  puts "The Students of Villains Academy"
-  puts "--------------"
+  puts "The Students of Villains Academy".center(88)
+  puts "--------------".center(88)
 end
 # 3. print the students names from within the array - with index
 def print(students)
@@ -62,7 +46,7 @@ def print(students)
 end
 # 4. print the total of the students
 def print_footer(names)
-  puts "Overall, we have #{names.count} great student(s)"
+  puts "Overall, we have #{names.count} great student(s)".center(90)
 end
 # 5. call methods
 students = input_students
