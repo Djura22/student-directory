@@ -48,7 +48,7 @@ end
 # 3. print the students names from within the array - with index
 def print(students)
   students.each.with_index(1) do |student, index|
-    if student[:name].initial == "M"
+    if student[:name].initial == "M" && student[:name].length < 12
     puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
