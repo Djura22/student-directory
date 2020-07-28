@@ -1,3 +1,9 @@
+class String
+  def initial
+    self[0,1]
+  end
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -39,10 +45,12 @@ def print_header
   puts "The Students of Villains Academy"
   puts "--------------"
 end
-# 3. print the students names from within the array
+# 3. print the students names from within the array - with index
 def print(students)
   students.each.with_index(1) do |student, index|
+    if student[:name].initial == "M"
     puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 # 4. print the total of the students
