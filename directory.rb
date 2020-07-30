@@ -48,13 +48,15 @@ def input_students
   students
 end
 #  print the header
-def print_header
-  puts "The Students of Villains Academy".center(88)
-  puts "--------------".center(88)
+def print_header(students)
+  if !students.empty?
+    puts "The Students of Villains Academy".center(88)
+    puts "--------------".center(88)
+  end
 end
 #  print the students names from within the array - with index
 def print(students)
-  while true do
+  while !students.empty? do
     students.each.with_index(1) do |student, index|
 #     if student[:name].initial == "M" && student[:name].length < 12
       puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
@@ -66,8 +68,10 @@ end
 def print_footer(names)
   if names.count > 1
     puts "Overall, we have #{names.count} great students".center(90)
-  else
+  elsif names.count == 1
     puts "We have #{names.count} great student".center(90)
+  else
+    puts "We have no students".center(90)
   end
 end
 
@@ -86,7 +90,7 @@ end
   
 #  call methods
 students = input_students
-print_header
+print_header(students)
 # print(students)
 printby_cohort(students)
 print_footer(students)
