@@ -1,7 +1,6 @@
-
 @students = []
 
-# creation of class method for filtering by Initial.
+# creation of string method for filtering by Initial.
 class String
   def initial
     self[0,1]
@@ -58,7 +57,7 @@ def print_by_cohort
   sort_by_cohort.each do |cohort|
     @students.each.with_index(1) do |student, index|
       if student[:cohort] == cohort
-        puts "--- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+        puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
       end
     end
   end
@@ -71,7 +70,7 @@ def print_by_initial
     ini = gets.chomp
     @students.each.with_index(1) do |student, index|
       if student[:name].upcase.initial == ini.upcase
-        puts "--- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+        puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
       end
     end
     break
@@ -85,7 +84,7 @@ def print_by_length
     len = gets.chomp
     @students.each.with_index(1) do |student, index|
       if student[:name].length <= len.to_i
-        puts "--- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+        puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
       end
     end
     break
@@ -104,7 +103,7 @@ end
 def print_student_list
   while !@students.empty? do
     @students.each.with_index(1) do |student, index|
-      puts "--- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+      puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
     end
   break
   end
@@ -121,22 +120,24 @@ def print_footer
   end
 end
 
-# menu options
-def print_menu
-  puts "Welcome to the Student Directory, how would you like to proceed?"
-  puts "1. Input new students"
-  puts "2. Print student list"
-  puts "3. Print student list by cohort"
-  puts "4. Print list of students with specific initial"
-  puts "5. Print list of students with name length filter (i.e 1-10)"
-  puts "9. To terminate program"
-end
-
 # prints students with no filters
 def show_students
   print_header
   print_student_list
   print_footer
+end
+
+# Method to enable saving of the student list in an CSV file
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 # call to the menu and receiving users input
@@ -149,6 +150,18 @@ def interactive_menu
   end
 end
   
+# menu options
+def print_menu
+  puts "Welcome to the Student Directory, how would you like to proceed?"
+  puts "1. Input new students"
+  puts "2. Print student list"
+  puts "3. Print student list by cohort"
+  puts "4. Print list of students with specific initial"
+  puts "5. Print list of students with name length filter (i.e 1-10)"
+  puts "6. Save the list to students.csv"
+  puts "9. To terminate program"
+end
+
 def process(selection)
   # do what the user has asked
   case selection
@@ -162,12 +175,14 @@ def process(selection)
       print_by_initial
     when "5"
       print_by_length
+    when "6"
+      save_students
     when "9"
       exit
     else
       puts "Invalid choice, please select again from numbers provided."
   end
 end
-  
+
 # call menu (run program)
 interactive_menu
