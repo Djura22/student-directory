@@ -10,19 +10,23 @@ def input_students
   puts "Leave blank if you wish to finish"
   # creation of empty array
   students = []
+  # asking user for input
   name = gets.chop.to_sym
   # repeat request until name is empty
   while !name.empty? do
     puts "Please enter which cohort the student is a member of. i.e July"
     cohort = gets.chop.to_sym
+    # confirming input with user
     puts "Is the following correct - Name: #{name}, Cohort: #{cohort} ? type y/n"
     user_conf = gets.chop
+    # requesting re-entry if user does not confirm
     if user_conf == "n"
       puts "re-enter name"
       name = gets.chop.to_sym
       puts "re-enter cohort (if not known, leave blank)"
       cohort = gets.chop.to_sym
     end
+    # setting default for cohort if none chosen
     if cohort.empty?
       cohort = "N/A".to_sym
     end
@@ -34,6 +38,7 @@ def input_students
     height = gets.chop.to_sym
     # add the student hash to the array
     students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
+    # custom feedback based on student count
     if students.count > 1
       puts "Now we have #{students.count} students"
     else
@@ -49,6 +54,7 @@ def input_students
 end
 #  print the header
 def print_header(students)
+  # if no students present, does not run
   if !students.empty?
     puts "The Students of Villains Academy".center(88)
     puts "--------------".center(88)
@@ -66,6 +72,7 @@ def print(students)
 end
 #  print the total of the students
 def print_footer(names)
+  # customised footer based on student count
   if names.count > 1
     puts "Overall, we have #{names.count} great students".center(90)
   elsif names.count == 1
@@ -74,7 +81,7 @@ def print_footer(names)
     puts "We have no students".center(90)
   end
 end
-
+# printing students sorted by cohort
 def printby_cohort(students)
   sortby_cohort = students.map {|student| student[:cohort]}.uniq
   sortby_cohort.each do |cohort|
@@ -88,7 +95,7 @@ end
   
   
   
-#  call methods
+# call methods
 students = input_students
 print_header(students)
 # print(students)
