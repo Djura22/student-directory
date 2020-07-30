@@ -11,7 +11,7 @@ def input_students
   # creation of empty array
   students = []
   # asking user for input
-  name = gets.chop.to_sym
+  name = gets.chop
   # repeat request until name is empty
   while !name.empty? do
     puts "Please enter which cohort the student is a member of. i.e July"
@@ -64,10 +64,35 @@ end
 def print(students)
   while !students.empty? do
     students.each.with_index(1) do |student, index|
-#     if student[:name].initial == "M" && student[:name].length < 12
       puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
     end
   break
+  end
+end
+# print students by first initial specified
+def print_by_initial(students)
+  while !students.empty? do
+    puts "Please select initial to search by"
+    ini = gets.chomp
+    students.each.with_index(1) do |student, index|
+      if student[:name].upcase.initial == ini.upcase
+        puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+      end
+    end
+    break
+  end
+end
+# print students by specified length range (1-i)
+def print_by_length(students)
+  while !students.empty? do
+  puts "Please select your maximum name length"
+    len = gets.chomp
+    students.each.with_index(1) do |student, index|
+      if student[:name].length <= len.to_i
+        puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+      end
+    end
+    break
   end
 end
 #  print the total of the students
@@ -82,9 +107,9 @@ def print_footer(names)
   end
 end
 # printing students sorted by cohort
-def printby_cohort(students)
-  sortby_cohort = students.map {|student| student[:cohort]}.uniq
-  sortby_cohort.each do |cohort|
+def print_by_cohort(students)
+  sort_by_cohort = students.map {|student| student[:cohort]}.uniq
+  sort_by_cohort.each do |cohort|
     students.each.with_index(1) do |student, index|
       if student[:cohort] == cohort
         puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
@@ -92,12 +117,43 @@ def printby_cohort(students)
     end
   end
 end
+
+def interactive_menu
+  students = []
+  loop do
+  # 1. print the menu and ask the user what to do
+  puts "Welcome to the Student Directory, how would you like to proceed?"
+  puts "1. Input new students"
+  puts "2. Print student list"
+  puts "3. Print student list by cohort"
+  puts "4. Print list of students with specific initial"
+  puts "5. Print list of students with name length filter (i.e 1-10)"
+  puts "9. To terminate program"
+  # 2. read the input and save it into a variable
+  selection = gets.chomp
+  # 3. do what the user has asked
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        print_header(students)
+        print(students)
+        print_footer(students)
+      when "3"
+        print_by_cohort(students)
+      when "4"
+        print_by_initial(students)
+      when "5"
+        print_by_length(students)
+      when "9"
+        exit
+      else
+        puts "Invalid choice, please select again from numbers provided."
+    end
+  end
+end
   
   
   
 # call methods
-students = input_students
-print_header(students)
-# print(students)
-printby_cohort(students)
-print_footer(students)
+interactive_menu
