@@ -1,4 +1,4 @@
-# creation of class method for filtering by Initial
+# creation of class method for filtering by Initial.
 class String
   def initial
     self[0,1]
