@@ -34,7 +34,11 @@ def input_students
     height = gets.chomp.to_sym
     # add the student hash to the array
     students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    if students.count > 1
+      puts "Now we have #{students.count} students"
+    else
+      puts "Now we have #{students.count} student"
+    end
     # get more names from the user
     puts "Please enter the name of the next student"
     puts "Leave blank if you wish to finish"
@@ -43,12 +47,12 @@ def input_students
   # return the array of students
   students
 end
-# 2. print the header
+#  print the header
 def print_header
   puts "The Students of Villains Academy".center(88)
   puts "--------------".center(88)
 end
-# 3. print the students names from within the array - with index
+#  print the students names from within the array - with index
 def print(students)
   while true do
     students.each.with_index(1) do |student, index|
@@ -58,12 +62,31 @@ def print(students)
   break
   end
 end
-# 4. print the total of the students
+#  print the total of the students
 def print_footer(names)
-  puts "Overall, we have #{names.count} great student(s)".center(90)
+  if names.count > 1
+    puts "Overall, we have #{names.count} great students".center(90)
+  else
+    puts "We have #{names.count} great student".center(90)
+  end
 end
-# 5. call methods
+
+def printby_cohort(students)
+  sortby_cohort = students.map {|student| student[:cohort]}.uniq
+  sortby_cohort.each do |cohort|
+    students.each.with_index(1) do |student, index|
+      if student[:cohort] == cohort
+        puts "#{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
+      end
+    end
+  end
+end
+  
+  
+  
+#  call methods
 students = input_students
 print_header
-print(students)
+# print(students)
+printby_cohort(students)
 print_footer(students)
