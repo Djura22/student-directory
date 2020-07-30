@@ -94,8 +94,8 @@ end
 def print_header
   # if no students present, does not run
   if !@students.empty?
-    puts "The Students of Villains Academy".center(88)
-    puts "--------------".center(88)
+    puts "The Students of Villains Academy".center(98)
+    puts "--------------".center(98)
   end
 end
 
@@ -112,11 +112,11 @@ end
 def print_footer
   # customised footer based on student count
   if @students.count > 1
-    puts "Overall, we have #{@students.count} great students".center(90)
+    puts "Overall, we have #{@students.count} great students".center(100)
   elsif @students.count == 1
-    puts "We have #{@students.count} great student".center(90)
+    puts "We have #{@students.count} great student".center(100)
   else
-    puts "We have no students".center(90)
+    puts "We have no students".center(100)
   end
 end
 
@@ -127,7 +127,7 @@ def show_students
   print_footer
 end
 
-# Method to enable saving of the student list in an CSV file
+# saves the student list in an CSV file (students.csv)
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
@@ -136,6 +136,16 @@ def save_students
     student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
+  end
+  file.close
+end
+
+# loads previous save of student list (students.csv)
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, nationality, hobbie, height, cohort = line.chomp.split(',')
+    @students << {name: name, nationality: nationality.to_sym, hobbie: hobbie.to_sym, height: height.to_sym, cohort: cohort.to_sym}
   end
   file.close
 end
@@ -158,8 +168,9 @@ def print_menu
   puts "3. Print student list by cohort"
   puts "4. Print list of students with specific initial"
   puts "5. Print list of students with name length filter (i.e 1-10)"
-  puts "6. Save the list to students.csv"
-  puts "9. To terminate program"
+  puts "6. SAVE the list to students.csv"
+  puts "7. LOAD list from students.csv"
+  puts "9. EXIT program"
 end
 
 def process(selection)
@@ -177,6 +188,8 @@ def process(selection)
       print_by_length
     when "6"
       save_students
+    when "7"
+      load_students
     when "9"
       exit
     else
