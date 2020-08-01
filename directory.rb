@@ -11,31 +11,31 @@ def input_students
   puts "Please enter the name of the student"
   puts "Leave blank if you wish to finish"
   # asking user for input
-  name = gets.chop
+  name = STDIN.gets.chop
   # repeat request until name is empty
   while !name.empty? do
     puts "Please enter which cohort the student is a member of. i.e July"
-    cohort = gets.chop.to_sym
+    cohort = STDIN.gets.chop.to_sym
     # confirming input with user
     puts "Is the following correct - Name: #{name}, Cohort: #{cohort} ? type y/n"
-    user_conf = gets.chop
+    user_conf = STDIN.gets.chop
     # requesting re-entry if user does not confirm
     if user_conf == "n"
       puts "re-enter name"
-      name = gets.chop.to_sym
+      name = STDIN.gets.chop.to_sym
       puts "re-enter cohort (if not known, leave blank)"
-      cohort = gets.chop.to_sym
+      cohort = STDIN.gets.chop.to_sym
     end
     # setting default for cohort if none chosen
     if cohort.empty?
       cohort = "N/A".to_sym
     end
     puts "Please enter students nationality"
-    nationality = gets.chop.to_sym
+    nationality = STDIN.gets.chop.to_sym
     puts "Please enter students favourite hobbie"
-    fav_hobbie = gets.chop.to_sym
+    fav_hobbie = STDIN.gets.chop.to_sym
     puts "Please enter students height in feet, i.e 5.8"
-    height = gets.chop.to_sym
+    height = STDIN.gets.chop.to_sym
     # add the student hash to the array
     @students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
     # custom feedback based on student count
@@ -47,7 +47,7 @@ def input_students
     # get more names from the user
     puts "Please enter the name of the next student"
     puts "Leave blank if you wish to finish"
-    name = gets.chop
+    name = STDIN.gets.chop
   end
 end
 
@@ -67,7 +67,7 @@ end
 def print_by_initial
   while !@students.empty? do
     puts "Please select initial to search by"
-    ini = gets.chomp
+    ini = STDIN.gets.chomp
     @students.each.with_index(1) do |student, index|
       if student[:name].upcase.initial == ini.upcase
         puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
@@ -81,7 +81,7 @@ end
 def print_by_length
   while !@students.empty? do
   puts "Please select your maximum name length"
-    len = gets.chomp
+    len = STDIN.gets.chomp
     @students.each.with_index(1) do |student, index|
       if student[:name].length <= len.to_i
         puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
@@ -141,13 +141,26 @@ def save_students
 end
 
 # loads previous save of student list (students.csv)
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
   name, nationality, hobbie, height, cohort = line.chomp.split(',')
     @students << {name: name, nationality: nationality.to_sym, hobbie: hobbie.to_sym, height: height.to_sym, cohort: cohort.to_sym}
   end
   file.close
+end
+
+# 
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist"
+    exit
+  end
 end
 
 # call to the menu and receiving users input
@@ -156,7 +169,7 @@ def interactive_menu
   # 1. print the menu and ask the user what to do
     print_menu
   # 2. read the input and save it into a variable
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
   
@@ -167,7 +180,7 @@ def print_menu
   puts "2. Print student list"
   puts "3. Print student list by cohort"
   puts "4. Print list of students with specific initial"
-  puts "5. Print list of students with name length filter (i.e 1-10)"
+  puts "5. Print list of students with name length filter ( i.e 1 - (10) )"
   puts "6. SAVE the list to students.csv"
   puts "7. LOAD list from students.csv"
   puts "9. EXIT program"
@@ -175,6 +188,7 @@ end
 
 def process(selection)
   # do what the user has asked
+
   case selection
     when "1"
       input_students
@@ -198,4 +212,5 @@ def process(selection)
 end
 
 # call menu (run program)
+try_load_students
 interactive_menu
