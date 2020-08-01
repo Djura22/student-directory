@@ -1,12 +1,5 @@
 @students = []
 
-# creation of string method for filtering by Initial.
-class String
-  def initial
-    self[0,1]
-  end
-end
-
 def input_students
   puts "Please enter the name of the student"
   puts "Leave blank if you wish to finish"
@@ -60,6 +53,13 @@ def print_by_cohort
         puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
       end
     end
+  end
+end
+
+# creation of string method for filtering by Initial.
+class String
+  def initial
+    self[0,1]
   end
 end
 
@@ -153,7 +153,7 @@ end
 # 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  return load_students if filename.nil?
   if File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
@@ -175,7 +175,7 @@ end
   
 # menu options
 def print_menu
-  puts "Welcome to the Student Directory, how would you like to proceed?"
+  puts "You are exploring the Student Directory, how would you like to proceed?".center(100)
   puts "1. Input new students"
   puts "2. Print student list"
   puts "3. Print student list by cohort"
