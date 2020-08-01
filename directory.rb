@@ -119,10 +119,12 @@ def show_students
   print_footer
 end
 
-# saves the student list in an CSV file (students.csv)
+# saves the student list in an CSV file
 def save_students
+  puts "Type filename of new or existing file to save as (inluding type i.e .csv)"
+  fname = gets.chomp
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open("#{fname}", "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
@@ -183,20 +185,26 @@ def process(selection)
 
   case selection
     when "1"
+      puts "Let's add some students!"
       input_students
     when "2"
+      puts "Printing Student List"
       show_students
     when "3"
+      puts "Printing Student List by Cohort"
       print_by_cohort
     when "4"
       print_by_initial
     when "5"
       print_by_length
     when "6"
+      puts "Saving Students..."
       save_students
     when "7"
-      load_students
+      puts "Existing List Loaded"
+      load_students_from_menu
     when "9"
+      puts "Bye!"
       exit
     else
       puts "Invalid choice, please select again from numbers provided."
