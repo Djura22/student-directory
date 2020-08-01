@@ -20,9 +20,7 @@ def input_students
       cohort = STDIN.gets.chop.to_sym
     end
     # setting default for cohort if none chosen
-    if cohort.empty?
-      cohort = "N/A".to_sym
-    end
+    cohort = "N/A".to_sym if cohort.empty?
     puts "Please enter students nationality"
     nationality = STDIN.gets.chop.to_sym
     puts "Please enter students favourite hobbie"
@@ -38,9 +36,7 @@ def input_students
       puts "Now we have #{@students.count} student"
     end
     # get more names from the user
-    puts "Please enter the name of the next student"
-    puts "Leave blank if you wish to finish"
-    name = STDIN.gets.chop
+    return input_students
   end
 end
 
@@ -69,9 +65,7 @@ def print_by_initial
     puts "Please select initial to search by"
     ini = STDIN.gets.chomp
     @students.each.with_index(1) do |student, index|
-      if student[:name].upcase.initial == ini.upcase
-        puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
-      end
+    puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)" if student[:name].upcase.initial == ini.upcase
     end
     break
   end
@@ -83,9 +77,7 @@ def print_by_length
   puts "Please select your maximum name length"
     len = STDIN.gets.chomp
     @students.each.with_index(1) do |student, index|
-      if student[:name].length <= len.to_i
-        puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)"
-      end
+    puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)" if student[:name].length <= len.to_i
     end
     break
   end
