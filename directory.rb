@@ -1,4 +1,5 @@
 @students = []
+@load_default = "students.csv"
 
 def input_students
   puts "Please enter the name of the student"
@@ -28,7 +29,7 @@ def input_students
     puts "Please enter students height in feet, i.e 5.8"
     height = STDIN.gets.chop.to_sym
     # add the student hash to the array
-    @students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
+    pop_student_array(name, nationality, fav_hobbie, height, cohort)
     # custom feedback based on student count
     if @students.count > 1
       puts "Now we have #{@students.count} students"
@@ -38,6 +39,10 @@ def input_students
     # get more names from the user
     return input_students
   end
+end
+
+def pop_student_array(name, nationality, fav_hobbie, height, cohort)
+  @students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
 end
 
 # printing students sorted by cohort
@@ -63,7 +68,7 @@ end
 def print_by_initial
   while !@students.empty? do
     puts "Please select initial to search by"
-    ini = STDIN.gets.chomp
+    ini = STDIN.gets.chop
     @students.each.with_index(1) do |student, index|
     puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)" if student[:name].upcase.initial == ini.upcase
     end
@@ -75,7 +80,7 @@ end
 def print_by_length
   while !@students.empty? do
   puts "Please select your maximum name length"
-    len = STDIN.gets.chomp
+    len = STDIN.gets.chop
     @students.each.with_index(1) do |student, index|
     puts "-- #{index}. #{student[:name]}, Nationality: #{student[:nationality]}, Favourite Hobbie: #{student[:hobbie]}, Height(ft): #{student[:height]} (#{student[:cohort]} cohort)" if student[:name].length <= len.to_i
     end
@@ -122,7 +127,7 @@ end
 # saves the student list in an CSV file
 def save_students
   puts "Type filename of new or existing file to save as (inluding type i.e .csv)"
-  fname = gets.chomp
+  fname = gets.chop
   # open the file for writing
   file = File.open("#{fname}", "w")
   # iterate over the array of students
@@ -135,11 +140,11 @@ def save_students
 end
 
 # loads previous save of student list (students.csv)
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+def load_students(load_file = @load_default)
+  file = File.open(load_file, "r")
   file.readlines.each do |line|
   name, nationality, hobbie, height, cohort = line.chomp.split(',')
-    @students << {name: name, nationality: nationality.to_sym, hobbie: hobbie.to_sym, height: height.to_sym, cohort: cohort.to_sym}
+    pop_student_array(name, nationality, hobbie, height, cohort)
   end
   file.close
 end
@@ -163,7 +168,7 @@ def interactive_menu
   # 1. print the menu and ask the user what to do
     print_menu
   # 2. read the input and save it into a variable
-    process(STDIN.gets.chomp)
+    process(STDIN.gets.chop)
   end
 end
   
@@ -201,8 +206,15 @@ def process(selection)
       puts "Saving Students..."
       save_students
     when "7"
-      puts "Existing List Loaded"
-      load_students_from_menu
+      puts "Type existing list to load (including filetype), leaving blank will load default list"
+      load_file = gets.chop
+      if load_file.empty?
+        puts "Loading #{@load_default}"
+        load_students
+      else
+        puts "Loading #{load_file}"
+        load_students(load_file)
+      end
     when "9"
       puts "Bye!"
       exit
