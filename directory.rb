@@ -129,24 +129,24 @@ def save_students
   puts "Type filename of new or existing file to save as (inluding type i.e .csv)"
   fname = gets.chop
   # open the file for writing
-  file = File.open("#{fname}", "w")
+  file = File.open("#{fname}", "w") do |file|
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    @students.each do |student|
+      student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-  file.close
 end
 
 # loads previous save of student list (students.csv)
 def load_students(load_file = @load_default)
-  file = File.open(load_file, "r")
-  file.readlines.each do |line|
-  name, nationality, hobbie, height, cohort = line.chomp.split(',')
-    pop_student_array(name, nationality, hobbie, height, cohort)
+  file = File.open(load_file, "r") do |file|
+    file.readlines.each do |line|
+    name, nationality, hobbie, height, cohort = line.chomp.split(',')
+      pop_student_array(name, nationality, hobbie, height, cohort)
+    end
   end
-  file.close
 end
 
 # 
