@@ -183,6 +183,7 @@ def print_menu
   puts "5. Print list of students with name length filter ( i.e 1 - (10) )"
   puts "6. SAVE a student list"
   puts "7. LOAD a student list"
+  puts "8. Print source code"
   puts "9. EXIT program"
 end
 
@@ -216,6 +217,8 @@ def process(selection)
         puts "Loading #{load_file}"
         load_students(load_file)
       end
+    when "8"
+      print_source_code
     when "9"
       puts "Bye!"
       exit
@@ -224,6 +227,16 @@ def process(selection)
   end
 end
 
-# call menu (run program)
+def print_source_code
+  puts "Type (y) to print source code"
+  user = gets.chop.upcase
+  if user == "Y"
+    return $><<IO.read($0)
+  end
+end
+
+
+# call methods
+print_source_code
 try_load_students
 interactive_menu
