@@ -1,5 +1,9 @@
+# Creation of empty array
 @students = []
+# setting default loadfile to students.csv
 @load_default = "students.csv"
+# requiring the csv class
+require 'csv'
 
 def input_students
   puts "Please enter the name of the student"
@@ -41,6 +45,7 @@ def input_students
   end
 end
 
+# method defined for populating student array
 def pop_student_array(name, nationality, fav_hobbie, height, cohort)
   @students << {name: name, nationality: nationality, hobbie: fav_hobbie, height: height, cohort: cohort}
 end
@@ -126,30 +131,26 @@ end
 
 # saves the student list in an CSV file
 def save_students
-  puts "Type filename of new or existing file to save as (inluding type i.e .csv)"
+  puts "Type filename of new or existing file to save as (including type i.e .csv)"
   fname = gets.chop
-  # open the file for writing
-  file = File.open("#{fname}", "w") do |file|
+  # open the file for writing (using csv class)
+  CSV.open("#{fname}", "w") do |file|
   # iterate over the array of students
     @students.each do |student|
-      student_data = [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      file << [student[:name], student[:nationality], student[:hobbie], student[:height], student[:cohort]]
     end
   end
 end
 
-# loads previous save of student list (students.csv)
+# loads previous save of student list (default set via line 4)
 def load_students(load_file = @load_default)
-  file = File.open(load_file, "r") do |file|
-    file.readlines.each do |line|
-    name, nationality, hobbie, height, cohort = line.chomp.split(',')
+  CSV.foreach(load_file) do |row|
+    name, nationality, hobbie, height, cohort = row
       pop_student_array(name, nationality, hobbie, height, cohort)
-    end
   end
 end
 
-# 
+# loads student file from command line
 def try_load_students
   filename = ARGV.first # first argument from the command line
   return load_students if filename.nil?
@@ -180,8 +181,8 @@ def print_menu
   puts "3. Print student list by cohort"
   puts "4. Print list of students with specific initial"
   puts "5. Print list of students with name length filter ( i.e 1 - (10) )"
-  puts "6. SAVE the list to students.csv"
-  puts "7. LOAD list from students.csv"
+  puts "6. SAVE a student list"
+  puts "7. LOAD a student list"
   puts "9. EXIT program"
 end
 
